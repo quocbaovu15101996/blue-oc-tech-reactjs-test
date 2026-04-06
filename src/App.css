@@ -1,0 +1,27 @@
+.app-shell {
+  --shell-bg-start: #f6efe7;
+  --shell-bg-end: #ece2d3;
+  --shell-surface: rgba(255, 252, 247, 0.82);
+  --shell-surface-strong: #fffdf9;
+  --shell-border: rgba(68, 49, 33, 0.14);
+  --shell-text: #201913;
+  --shell-muted: #685b51;
+  --shell-accent: #0f766e;
+  --shell-accent-soft: rgba(15, 118, 110, 0.12);
+  --shell-shadow: 0 32px 90px rgba(44, 26, 12, 0.12);
+  --shell-radius-xl: 32px;
+  --shell-radius-lg: 24px;
+  --shell-radius-md: 18px;
+
+  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
+  padding: clamp(1rem, 2vw, 2rem);
+  display: grid;
+  align-items: stretch;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.08), transparent 30%),
+    radial-gradient(circle at bottom right, rgba(176, 123, 70, 0.12), transparent 34%),
+    linear-gradient(180deg, var(--shell-bg-start) 0%, var(--shell-bg-end) 100%);
+  color: var(--shell-text);
+}
