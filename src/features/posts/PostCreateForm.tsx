@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { useState, type ChangeEvent, type FormEventHandler } from 'react'
 import { useCreatePostMutation } from './hooks/useCreatePostMutation'
 import type { Post } from './types'
 
@@ -50,7 +50,7 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
     }
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault()
 
     const trimmedTitle = title.trim()
@@ -87,20 +87,20 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
   }
 
   return (
-    <form className="posts-create-form" onSubmit={handleSubmit}>
-      <div className="posts-create-form__header">
+    <form className="border border-[color:var(--shell-border)] rounded-[18px] mt-4 grid gap-[0.95rem] bg-[linear-gradient(180deg,var(--shell-surface-strong)_0%,var(--shell-surface)_100%)] p-4 max-[640px]:p-[0.9rem] overflow-auto h-full" onSubmit={handleSubmit}>
+      <div className="flex items-start justify-between gap-4 max-[960px]:flex-col max-[960px]:items-start">
         <div>
-          <p className="posts-create-form__eyebrow">Create post</p>
-          <h3 className="posts-create-form__title">Write a new entry</h3>
+          <p className="text-[color:var(--shell-muted)] m-0 mb-[0.35rem] text-[0.7rem] uppercase tracking-[0.12em]">Create post</p>
+          <h3 className="text-[color:var(--shell-text)] m-0 text-[1.08rem] tracking-[-0.02em]">Write a new entry</h3>
         </div>
-        <p className="posts-create-form__note">Demo submits always use userId 1.</p>
+        <p className="text-[color:var(--shell-muted)] m-0 text-right text-[0.82rem] max-[960px]:text-left">Demo submits always use userId 1.</p>
       </div>
 
-      <div className="posts-create-form__fields">
-        <label className={`posts-create-form__field ${titleError ? 'posts-create-form__field--error' : ''}`}>
-          <span className="posts-create-form__label">Title</span>
+      <div className="grid gap-[0.9rem]">
+        <label className="grid gap-[0.45rem]">
+          <span className="text-[color:var(--shell-muted)] text-[0.78rem] font-bold uppercase tracking-[0.08em]">Title</span>
           <input
-            className="posts-create-form__input"
+            className={`w-full rounded-[18px] border border-[color:var(--shell-border)] bg-[var(--shell-surface-strong)] px-[0.95rem] py-[0.85rem] font-[inherit] text-[color:var(--shell-text)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] transition duration-150 ease-out placeholder:text-[color:var(--shell-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shell-accent)]${titleError ? ' border-[color:var(--posts-detail-error-border)] bg-[var(--posts-detail-error-surface-end)]' : ''}`}
             type="text"
             name="title"
             value={title}
@@ -111,16 +111,16 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
             disabled={isSubmitting}
           />
           {titleError ? (
-            <span className="posts-create-form__field-error" id="post-create-title-error">
+            <span className="text-[0.82rem] font-semibold text-[color:var(--posts-detail-error)]" id="post-create-title-error">
               {titleError}
             </span>
           ) : null}
         </label>
 
-        <label className={`posts-create-form__field ${bodyError ? 'posts-create-form__field--error' : ''}`}>
-          <span className="posts-create-form__label">Body</span>
+        <label className="grid gap-[0.45rem]">
+          <span className="text-[color:var(--shell-muted)] text-[0.78rem] font-bold uppercase tracking-[0.08em]">Body</span>
           <textarea
-            className="posts-create-form__textarea"
+            className={`w-full rounded-[18px] border border-[color:var(--shell-border)] bg-[var(--shell-surface-strong)] px-[0.95rem] py-[0.85rem] font-[inherit] text-[color:var(--shell-text)] shadow-[inset_0_1px_0_rgba(255,255,255,0.6)] transition duration-150 ease-out placeholder:text-[color:var(--shell-muted)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shell-accent)] min-h-[11rem] resize-y${bodyError ? ' border-[color:var(--posts-detail-error-border)] bg-[var(--posts-detail-error-surface-end)]' : ''}`}
             name="body"
             value={body}
             onChange={handleBodyChange}
@@ -131,7 +131,7 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
             rows={8}
           />
           {bodyError ? (
-            <span className="posts-create-form__field-error" id="post-create-body-error">
+            <span className="text-[0.82rem] font-semibold text-[color:var(--posts-detail-error)]" id="post-create-body-error">
               {bodyError}
             </span>
           ) : null}
@@ -140,7 +140,7 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
 
       {feedbackTone !== 'idle' ? (
         <p
-          className={`posts-create-form__feedback posts-create-form__feedback--${feedbackTone}`}
+          className={`m-0 rounded-[18px] border border-transparent px-4 py-[0.95rem] text-[0.85rem] font-semibold ${feedbackTone === 'pending' ? 'border-[color:rgba(15,118,110,0.18)] bg-[var(--shell-accent-soft)] text-[color:var(--shell-accent)]' : feedbackTone === 'error' ? 'border-[color:var(--posts-detail-error-border)] bg-[linear-gradient(180deg,var(--posts-detail-error-surface-start)_0%,var(--posts-detail-error-surface-end)_100%)] text-[color:var(--posts-detail-error)]' : 'border-[color:var(--posts-create-success-border)] bg-[linear-gradient(180deg,var(--posts-create-success-surface-start)_0%,var(--posts-create-success-surface-end)_100%)] text-[color:var(--shell-accent)]'}`}
           role={feedbackTone === 'error' ? 'alert' : 'status'}
           aria-live="polite"
         >
@@ -148,9 +148,9 @@ export function PostCreateForm({ onCreated }: PostCreateFormProps) {
         </p>
       ) : null}
 
-      <div className="posts-create-form__actions">
-        <p className="posts-create-form__hint">The new post is inserted into the list immediately after save.</p>
-        <button className="posts-create-form__submit" type="submit" disabled={isSubmitting}>
+      <div className="flex flex-wrap items-center justify-between gap-4 max-[960px]:flex-col max-[960px]:items-start">
+        <p className="text-[color:var(--shell-muted)] m-0 text-[0.82rem]">The new post is inserted into the list immediately after save.</p>
+        <button className="rounded-full border border-[color:var(--shell-accent)] bg-[var(--shell-accent)] px-[1.1rem] py-[0.8rem] text-[0.82rem] font-bold uppercase tracking-[0.08em] text-white transition duration-150 ease-out hover:-translate-y-px hover:shadow-[0_32px_90px_rgba(44,26,12,0.12)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--shell-accent)] active:translate-y-0 max-[640px]:w-full" type="submit" disabled={isSubmitting}>
           {isSubmitting ? 'Creating…' : 'Create post'}
         </button>
       </div>
